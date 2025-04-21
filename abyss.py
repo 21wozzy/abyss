@@ -10,17 +10,9 @@ def clear_screen():
 
 # Function to print text with multicolor effect
 def multicolor_text(text):
-    colors = [
-        '\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m', '\033[97m',
-        '\033[31m', '\033[32m', '\033[33m', '\033[34m', '\033[35m', '\033[36m', '\033[37m'
-    ]
-    colored_text = ""
-    for i, char in enumerate(text):
-        color = random.choice(colors)
-        colored_text += color + char
-    return colored_text + '\033[0m'
+    return text  # Remove multicolor effect
 
-# Function to show the initial banner with multicolor effect
+# Function to show the initial banner
 def show_banner():
     clear_screen()
     banner = """
@@ -41,16 +33,16 @@ def show_banner():
     print(multicolor_text(banner))
     time.sleep(2)
 
-# Function to show "Created by Crowley" and two options in multicolor
+# Function to show "Created by Crowley" and two options
 def show_creator_message():
     clear_screen()
-    print(multicolor_text("⚠️ Creator's message: This tool should be used with caution. I will not be responsible for any illegal actions."))
+    print("⚠️ Creator's message: This tool should be used with caution. I will not be responsible for any illegal actions.")
     print("\n")
-    print(multicolor_text("Created by: crowley"))
+    print("Created by: crowley")
     print("\n")
-    print(multicolor_text("(1) Continue"))
-    print(multicolor_text("(2) Go back"))
-    return input(multicolor_text("Enter your choice: "))
+    print("(1) Continue")
+    print("(2) Go back")
+    return input("Enter your choice: ")
 
 # Function to ask if user wants to continue or go back
 def ask_continue_or_back():
@@ -60,25 +52,16 @@ def ask_continue_or_back():
     elif choice == "2":
         return False
     else:
-        print(multicolor_text("Invalid option, returning to the main menu."))
+        print("Invalid option, returning to the main menu.")
         return False
-
-# Secret option function
-def secret_option():
-    clear_screen()
-    print(multicolor_text("🔒 Secret Option Unlocked!"))
-    print(multicolor_text("This is a highly restricted function. Use it responsibly!"))
-    # Do something secret here
-    time.sleep(2)
-    input(multicolor_text("\nPress Enter to return to the menu..."))
 
 # Function to perform stress testing (real HTTP DoS)
 def stress_test():
     if ask_continue_or_back():
         clear_screen()  # Clean screen before performing the action
-        print(multicolor_text("🚨 Starting a Stress Test on the target server!"))
-        ip = input(multicolor_text("Enter the IP address of the target: "))
-        print(multicolor_text(f"Sending heavy traffic to {ip}. Be careful, only use this in controlled environments!"))
+        print("🚨 Starting a Stress Test on the target server!")
+        ip = input("Enter the IP address of the target: ")
+        print(f"Sending heavy traffic to {ip}. Be careful, only use this in controlled environments!")
         
         # Example of a real DoS using Python's socket
         try:
@@ -86,74 +69,44 @@ def stress_test():
                 s = subprocess.run(f"curl {ip} --silent --output /dev/null", shell=True)
                 print(f"Sending request to {ip}")
         except KeyboardInterrupt:
-            print(multicolor_text("\nStress Test stopped!"))
-            input(multicolor_text("\nPress Enter to return to the menu..."))
-
-# Function for advanced vulnerability scanning (Nikto example)
-def advanced_vulnerability_scan():
-    if ask_continue_or_back():
-        clear_screen()  # Clean screen before performing the action
-        print(multicolor_text("🕵️‍♂️ Performing advanced vulnerability scan with Nikto!"))
-        target = input(multicolor_text("Enter the target URL for vulnerability scan: "))
-        subprocess.run(f"nikto -h {target}", shell=True)
-        input(multicolor_text("\nPress Enter to return to the menu..."))
-
-# Function to run Metasploit to exploit vulnerabilities
-def run_metasploit():
-    if ask_continue_or_back():
-        clear_screen()  # Clean screen before performing the action
-        print(multicolor_text("⚠️ WARNING: This will attempt to exploit vulnerabilities using Metasploit."))
-        print(multicolor_text("You must have Metasploit installed on your system."))
-        print(multicolor_text("Starting Metasploit..."))
-        subprocess.run("msfconsole", shell=True)
-        input(multicolor_text("\nPress Enter to return to the menu..."))
-
-# Function to gather network information and host data
-def gather_network_info():
-    if ask_continue_or_back():
-        clear_screen()  # Clean screen before performing the action
-        print(multicolor_text("🌐 Gathering network information..."))
-        subprocess.run("ifconfig", shell=True)
-        subprocess.run("netstat -tuln", shell=True)
-        input(multicolor_text("\nPress Enter to return to the menu..."))
-
-# Function to stealth mode (evade detection)
-def stealth_mode():
-    if ask_continue_or_back():
-        clear_screen()  # Clean screen before performing the action
-        print(multicolor_text("⛔ Engaging stealth mode: Attempting to avoid detection!"))
-        subprocess.run("nmap -sS -O -T0 192.168.1.1", shell=True)  # Example stealth scan
-        input(multicolor_text("\nPress Enter to return to the menu..."))
-
-# Function to scan for open ports in stealth mode
-def stealth_port_scan():
-    if ask_continue_or_back():
-        clear_screen()  # Clean screen before performing the action
-        ip = input(multicolor_text("Enter the IP for stealth port scan: "))
-        subprocess.run(f"nmap -sS {ip}", shell=True)
-        input(multicolor_text("\nPress Enter to return to the menu..."))
-
-# Function to check website status with extended info (real)
-def check_website_status():
-    if ask_continue_or_back():
-        clear_screen()  # Clean screen before performing the action
-        url = input(multicolor_text("Enter the website URL (e.g., https://example.com): "))
-        response = subprocess.run(f"curl -Is {url} | head -n 1", shell=True, capture_output=True, text=True)
-        print(multicolor_text(f"Status: {response.stdout}"))
-        input(multicolor_text("\nPress Enter to return to the menu..."))
+            print("\nStress Test stopped!")
+            input("\nPress Enter to return to the menu...")
 
 # Function to install all available packages in Termux (real)
 def install_all_packages():
     if ask_continue_or_back():
         clear_screen()  # Clean screen before performing the action
-        print(multicolor_text("⚠️ WARNING: You are about to install all available packages in Termux."))
-        print(multicolor_text("This may take a long time and consume a lot of space!"))
-        subprocess.run("pkg update -y && pkg upgrade -y", shell=True)
-        subprocess.run("pkg install $(pkg list -a) -y", shell=True)
+        print("⚠️ WARNING: You are about to install all available packages in Termux.")
+        print("This may take a long time and consume a lot of space!")
+
+        # Comando para habilitar repositorios (si aún no lo has hecho)
+        subprocess.run("pkg update", shell=True)
+        subprocess.run("pkg upgrade", shell=True)
+        subprocess.run("pkg install unstable-repo", shell=True)
+        subprocess.run("pkg install x11-repo", shell=True)
+        subprocess.run("pkg install science-repo", shell=True)
+        subprocess.run("pkg install root-repo", shell=True)
+        subprocess.run("pkg install games-repo", shell=True)
+
+        # Instalar todos los paquetes disponibles usando apt
+        subprocess.run("apt update", shell=True)
+        subprocess.run("apt upgrade", shell=True)
+        print("Instalando todos los paquetes con apt...")
+        subprocess.run("apt list --installed | awk -F/ '{print $1}' | tr '\n' ' ' | xargs apt install", shell=True)
+
+        # Instalar todos los paquetes disponibles usando pkg
+        subprocess.run("pkg update", shell=True)
+        subprocess.run("pkg upgrade", shell=True)
+        print("Instalando todos los paquetes con pkg...")
+        subprocess.run("pkg list-all | awk '{print $1}' | tr '\n' ' ' | xargs pkg install", shell=True)
+
+        # Instalar todos los paquetes de Python usando pip
         subprocess.run("pip install --upgrade pip", shell=True)
-        subprocess.run("pip freeze | cut -d = -f 1 | xargs pip install --upgrade", shell=True)
-        print(multicolor_text("\nAll packages installed!"))
-        input(multicolor_text("\nPress Enter to return to the menu..."))
+        print("Instalando todos los paquetes con pip...")
+        subprocess.run("pip list --outdated | awk '{print $1}' | tr '\n' ' ' | xargs pip install", shell=True)
+        
+        print("\nAll packages installed!")
+        input("\nPress Enter to return to the menu...")
 
 # Main menu
 def main():
@@ -161,7 +114,7 @@ def main():
 
     while True:
         clear_screen()
-        print(multicolor_text("""
+        print("""
         Select an option (from lightest to strongest):
         1. 🌐 Gather network info (ifconfig, netstat)
         2. 🔍 Check website status
@@ -175,18 +128,18 @@ def main():
         10. 🧨 Run Metasploit to exploit vulnerabilities
         11. 🔒 Secret Option (requires a password)
         12. ⛔ Exit the tool
-        """))
+        """)
 
-        choice = input(multicolor_text("Enter the option number (1-12): "))
+        choice = input("Enter the option number (1-12): ")
 
         # Adding the secret option functionality
         if choice == "11":
-            password = input(multicolor_text("Enter the secret password: "))
+            password = input("Enter the secret password: ")
             if password == "crowley123":  # Secret password to unlock the option
                 secret_option()
             else:
-                print(multicolor_text("Invalid password. Access denied."))
-                input(multicolor_text("\nPress Enter to return to the menu..."))
+                print("Invalid password. Access denied.")
+                input("\nPress Enter to return to the menu...")
 
         elif choice == "1":
             gather_network_info()
@@ -195,7 +148,7 @@ def main():
         elif choice == "3":
             stealth_mode()
         elif choice == "4":
-            ip = input(multicolor_text("Enter the IP for the port scan: "))
+            ip = input("Enter the IP for the port scan: ")
             subprocess.run(f"nmap -p- {ip}", shell=True)
         elif choice == "5":
             stress_test()
@@ -210,11 +163,11 @@ def main():
         elif choice == "10":
             run_metasploit()
         elif choice == "12":
-            print(multicolor_text("Exiting the tool..."))
+            print("Exiting the tool...")
             sys.exit()
         else:
-            print(multicolor_text("Invalid choice. Please try again."))
-            input(multicolor_text("\nPress Enter to return to the menu..."))
+            print("Invalid choice. Please try again.")
+            input("\nPress Enter to return to the menu...")
 
 if __name__ == "__main__":
     main()
