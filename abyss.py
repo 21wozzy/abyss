@@ -2,6 +2,7 @@ import os
 import time
 import subprocess
 import sys
+import requests
 
 # Function to clear the screen
 def clear_screen():
@@ -29,8 +30,7 @@ def show_banner():
     time.sleep(2)
 
 # Function for scanning ports with Nmap
-def scan_ports():
-    ip = input("Enter the IP for the port scan: ")
+def nmap_scan(ip):
     print(f"Scanning ports of {ip} with Nmap...")
     subprocess.run(f"nmap {ip}", shell=True)
     input("\nPress Enter to return to the menu...")
@@ -42,46 +42,14 @@ def check_website_status():
     print(f"Status: {response.stdout}")
     input("\nPress Enter to return to the menu...")
 
-# Function for making a strong HTTP request
-def make_http_request():
-    url = input("Enter the URL for the HTTP request: ")
-    method = input("Enter the HTTP method (GET, POST, etc.): ")
-    headers = input("Enter any additional headers (optional): ")
-    print(f"Making a {method} request to {url}...")
-    subprocess.run(f"curl -X {method} {url} -H '{headers}'", shell=True)
+# Function for checking DDoS protection
+def check_ddos_protection(target_url):
+    print(f"Checking DDoS protection for {target_url}...")
+    subprocess.run(f"curl -I {target_url}", shell=True)
     input("\nPress Enter to return to the menu...")
 
-# Function for checking if a website has protection
-def check_website_protection():
-    url = input("Enter the website URL to check protection: ")
-    print(f"Checking DDoS protection for {url}...")
-    subprocess.run(f"curl -I {url}", shell=True)
-    input("\nPress Enter to return to the menu...")
-
-# Function for attacking an IP and port
-def attack_ip_and_port():
-    ip = input("Enter the target IP: ")
-    port = input("Enter the target port: ")
-    print(f"Attacking {ip} on port {port}...")
-    subprocess.run(f"hydra -l admin -P /path/to/passwordlist.txt {ip} {port}", shell=True)
-    input("\nPress Enter to return to the menu...")
-
-# Function for scanning vulnerabilities
-def scan_vulnerabilities():
-    url = input("Enter the URL to scan for vulnerabilities: ")
-    print(f"Scanning {url} for vulnerabilities...")
-    subprocess.run(f"nikto -h {url}", shell=True)
-    input("\nPress Enter to return to the menu...")
-
-# Function for scanning DNS and subdomains
-def scan_dns_and_subdomains():
-    domain = input("Enter the domain to scan for DNS and subdomains: ")
-    print(f"Scanning {domain} for subdomains...")
-    subprocess.run(f"amass enum -d {domain}", shell=True)
-    input("\nPress Enter to return to the menu...")
-
-# Function to download all packages in Termux (apt, pip)
-def install_packages():
+# Function for downloading all packages in Termux (apt, pip)
+def download_all_packages():
     print("⚠️ WARNING: You are about to download all available packages in Termux.")
     print("This may take a long time and consume a lot of space!")
     print("⏳ Countdown: 10 seconds... Get out now if you have limited space!")
@@ -111,9 +79,6 @@ def secret_tools():
     3. **Nmap**: Network mapper. Used to scan for open ports and services running on a server.
     4. **Nikto**: Web server scanner. Scans web servers for security vulnerabilities.
     5. **Whois**: Domain information tool. It shows who owns a domain and other registration details.
-    6. **ClamAV**: Anti-virus tool. It helps scan files for viruses.
-    7. **SSL Labs**: Analyzes SSL certificates of a website.
-    8. **Wireshark**: Packet analyzer for inspecting network traffic.
     
     To use these tools, simply enter the number corresponding to the tool you want to use. 
     Note: Some tools may require additional setup. Ensure they are installed in Termux before use.
@@ -137,9 +102,6 @@ def osint_tools():
     3. Nmap - Network scanning
     4. Nikto - Web server scanner
     5. Whois - Domain information
-    6. ClamAV - Virus scanner
-    7. SSL Labs - SSL certificate information
-    8. Wireshark - Network protocol analyzer
     """)
 
     tool_choice = input("Choose a tool number: ")
@@ -157,15 +119,6 @@ def osint_tools():
     elif tool_choice == "5":
         domain = input("Enter the domain to query: ")
         subprocess.run(f"whois {domain}", shell=True)
-    elif tool_choice == "6":
-        print("Running ClamAV to scan for viruses...")
-        subprocess.run("clamav -r /path/to/scan", shell=True)
-    elif tool_choice == "7":
-        url = input("Enter the URL for SSL certificate info: ")
-        subprocess.run(f"ssllabs-scan {url}", shell=True)
-    elif tool_choice == "8":
-        print("Starting Wireshark for packet capture...")
-        subprocess.run("wireshark", shell=True)
     else:
         print("❌ Invalid option")
     input("\nPress Enter to return to the menu...")
@@ -178,41 +131,34 @@ def main():
         clear_screen()
         print("""
         Select an option:
-        [1] Scan ports with Nmap 🔍
-        [2] Check website status 🌐
-        [3] Make a strong HTTP request ⚡
-        [4] Check if the website has protection 🛡️
-        [5] Attack an IP and port 💥
-        [6] Scan for vulnerabilities 🕵️‍♂️
-        [7] Scan DNS and subdomains 🌐
-        [8] Download all packages ⚠️ [recommended]
-        [9] Secret Tools 🔑
-        [10] Exit the tool 🛑
+        1. Scan ports with Nmap 🔍
+        2. Check website status 🌐
+        3. Check if the website has protection 🛡️
+        4. Download all packages ⚠️ [recommended]
+        5. Secret Tools 🔑
+        6. Exit the tool 🛑
         """)
 
-        choice = input("Enter the option number (1-10): ")
+        choice = input("Enter the option number (1-6): ")
 
         if choice == "1":
-            scan_ports()
+            ip = input("Enter the IP for the port scan: ")
+            nmap_scan(ip)
         elif choice == "2":
             check_website_status()
         elif choice == "3":
-            make_http_request()
+            target_url = input("Enter the URL to check protection: ")
+            check_ddos_protection(target_url)
         elif choice == "4":
-            check_website_protection()
+            download_all_packages()
         elif choice == "5":
-            attack_ip_and_port()
-        elif choice == "6":
-            scan_vulnerabilities()
-        elif choice == "7":
-            scan_dns_and_subdomains()
-        elif choice == "8":
-            install_packages()
-        elif choice == "9":
             secret_tools()
-        elif choice == "10":
+        elif choice == "6":
             print("Exiting the tool...")
             sys.exit()
         else:
-            print("Invalid option. Please try again.")
-            input("\nPress Enter to continue...")
+            print("Invalid choice. Please try again.")
+            input("\nPress Enter to return to the menu...")
+
+if __name__ == "__main__":
+    main()
